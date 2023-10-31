@@ -1,4 +1,5 @@
 {% extends 'catalog/base.html' %}
+{% load filter %}
 
 
 {% block content %}
@@ -11,8 +12,7 @@
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ product.purchase_price }} руб</h1>
-                    <img src="{{ MEDIA_URL }}images/iphone18.jpeg" alt="Изображение товара" class="img-fluid">
-                    <img src="{{ MEDIA_URL }}images/iphone18.jpeg" alt="Image">
+                    <img src="{{ product.image|media_url }}" alt="Изображение товара" class="img-fluid">
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
