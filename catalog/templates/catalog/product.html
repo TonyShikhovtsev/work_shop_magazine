@@ -13,6 +13,8 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ product.purchase_price }} руб</h1>
                     <img src="{{ product.image|media_url }}" alt="Изображение товара" class="img-fluid">
+                    <a href="{% url 'edit_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+                    <a href="{% url 'delete_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Удалить</a>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
