@@ -26,12 +26,16 @@ def contacts(requests):
     return render(requests, 'catalog/contacts.html')
 
 
+
 def product(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    active_version = product.versions.filter(is_active=True).first()
     context = {
-        'product': product
+        'product': product,
+        'active_version': active_version,
     }
     return render(request, 'catalog/product.html', context)
+
 
 
 def create_product(request):

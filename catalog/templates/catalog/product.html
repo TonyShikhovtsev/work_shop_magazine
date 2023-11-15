@@ -1,6 +1,6 @@
+
 {% extends 'catalog/base.html' %}
 {% load filter %}
-
 
 {% block content %}
 <div class="container">
@@ -13,6 +13,16 @@
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ product.purchase_price }} руб</h1>
                     <img src="{{ product.image|media_url }}" alt="Изображение товара" class="img-fluid">
+                    <p>{{ product.description }}</p>
+                    {% if active_version %}
+                        {% if active_version.created_at >= active_version.product.last_mode_date %}
+                            <p class="text-success">Это новая версия: {{ active_version.version_name }}</p>
+                        {% else %}
+                            <p class="text-warning">Это старая версия: {{ active_version.version_name }}</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-warning">Нет активной версии</p>
+                    {% endif %}
                     <a href="{% url 'edit_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
                     <a href="{% url 'delete_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Удалить</a>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
@@ -20,4 +30,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
