@@ -16,12 +16,20 @@
                     <p>{{ product.description }}</p>
                     {% if active_version %}
                         {% if active_version.created_at >= active_version.product.last_mode_date %}
-                            <p class="text-success">Это новая версия: {{ active_version.version_name }}</p>
+                            <p class="text-success">Версия продукта: {{ active_version.version_name }}</p>
                         {% else %}
-                            <p class="text-warning">Это старая версия: {{ active_version.version_name }}</p>
+                            <p class="text-warning">Активная Версия: {{ active_version.version_name }}</p>
                         {% endif %}
                     {% else %}
                         <p class="text-warning">Нет активной версии</p>
+                    <div class="row">
+                <div class="col-md-12">
+                    <h2>Версии продукта</h2>
+                    {% for version in versions %}
+                        <p>{{ version.version_name }} ({{ version.version_number }})</p>
+                    {% endfor %}
+                    <a href="{% url 'create_version' pk=product.pk %}" class="btn btn-primary">Добавить версию</a>
+                </div>
                     {% endif %}
                     <a href="{% url 'edit_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
                     <a href="{% url 'delete_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Удалить</a>

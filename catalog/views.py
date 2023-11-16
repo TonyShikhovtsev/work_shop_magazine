@@ -1,6 +1,6 @@
 from django.shortcuts import render,  get_object_or_404, redirect
 from catalog.models import Product
-from catalog.forms import ProductForm
+from catalog.forms import ProductForm, VersionForm
 
 def home(request):
     product_list = Product.objects.all()
@@ -30,12 +30,52 @@ def contacts(requests):
 def product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     active_version = product.versions.filter(is_active=True).first()
+    versions = product.versions.all()
     context = {
         'product': product,
         'active_version': active_version,
+        'versions': versions,
     }
     return render(request, 'catalog/product.html', context)
 
+
+def create_version(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == 'POST':
+        form = VersionForm(request.POST)
+        if form.is_valid():
+            version = form.save(commit=False)
+            version.product = product
+            version.save()
+            return redirect('product', pk=pk)
+    else:
+        form = VersionForm()
+
+    return render(request, 'catalog/create_version.html', {'form': form, 'product': product})
+
+def create_version(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == 'POST':
+        form = VersionForm(request.POST)
+        if form.is_valid():
+            version = form.save(commit=False)
+            version.product = product
+            version.save()
+            print("Version saved successfully!")
+            return redirect('product', pk=pk)
+        else:
+            print("Form errors:", form.errors)
+    else:
+        form = VersionForm()
+
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, 'catalog/create_version.html', context)
 
 
 def create_product(request):

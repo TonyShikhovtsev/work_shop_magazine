@@ -1,10 +1,11 @@
 from django import forms
-from .models import Product
+from .models import Product, Version
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'image']  # Remove 'price' from the fields list
+        fields = ['name', 'description', 'image']
 
     def clean_name(self):
         name = self.cleaned_data['name'].lower()
@@ -25,3 +26,11 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError(f"Описание не может содержать запрещенное слово: {word}")
 
         return description
+
+class VersionForm(forms.ModelForm):
+    class Meta:
+        model = Version
+        fields = ['version_number', 'version_name', 'is_active']
+
+    def __init__(self, *args, **kwargs):
+        super(VersionForm, self).__init__(*args, **kwargs)
