@@ -28,7 +28,7 @@
                     {% for version in versions %}
                         <p>{{ version.version_name }} ({{ version.version_number }})</p>
                     {% endfor %}
-                    <a href="{% url 'create_version' pk=product.pk %}" class="btn btn-primary">Добавить версию</a>
+                    <a href="{% url 'create_version' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Добавить версию</a>
                 </div>
                     {% endif %}
                     <a href="{% url 'edit_product' pk=product.pk %}" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
