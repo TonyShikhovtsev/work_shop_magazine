@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DOMAIN_NAME = 'http://127.0.0.1:8000/'
+DOMAIN_NAME = 'http://127.0.0.1:8005'
 
 
 # Application definition
@@ -86,7 +86,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'work_shop_magazine',
         'USER': 'postgres',
-        'PASSWORD': 'Sql481516'
+        'PASSWORD': 'Sql481516',
+        'PORT': '5432',
+        'HOST': 'localhost'
     }
 }
 
@@ -142,9 +144,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = False
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mke.sheppard@yandex.ru'
 EMAIL_HOST_PASSWORD = 'qzlgkxjzjlqhwhwk'
 
