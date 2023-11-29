@@ -77,5 +77,4 @@ class PasswordRecoveryView(FormView):
             fail_silently=False,
         )
 
-
         return HttpResponseRedirect(self.get_success_url())
