@@ -5,7 +5,8 @@ from django.urls import reverse_lazy, reverse
 from django.utils.crypto import get_random_string
 from django.views.generic import CreateView, UpdateView, TemplateView
 from django.views.generic.edit import FormView
-import requests
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 from users.forms import UserRegisterForm, UserProfileForm, PasswordRecoveryForm
 from users.models import User, EmailVerification
@@ -49,14 +50,25 @@ class PasswordRecoveryView(FormView):
 
     def form_valid(self, form):
         email = form.cleaned_data['email']
-        user = User.objects.get(email=email)
+
+        users = User.objects.filter(email=email)
+
+        if not users.exists():
+
+            messages.error(self.request, 'Пользователь с этим адресом электронной почты не существует.')
+            return self.form_invalid(form)
+
+        user = users.first()
+
         length = 12
         alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
         password = get_random_string(length, alphabet)
         user.set_password(password)
         user.save()
+
         subject = 'Password Recovery'
         message = f'Your new password: {password}'
+
         send_mail(
             subject=subject,
             message=message,
@@ -64,4 +76,6 @@ class PasswordRecoveryView(FormView):
             recipient_list=[user.email],
             fail_silently=False,
         )
-        return super().form_valid(form)
+
+
+        return HttpResponseRedirect(self.get_success_url())
