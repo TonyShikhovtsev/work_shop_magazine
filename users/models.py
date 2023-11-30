@@ -9,15 +9,15 @@ NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
-    username = None
+    username = models.CharField(max_length=150, unique=True)  # добавьте поле username
     email = models.EmailField(unique=True, verbose_name='почта')
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
     phone = models.CharField(max_length=35, verbose_name='телефон', **NULLABLE)
     country = models.CharField(max_length=150, verbose_name='страна')
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["username"]
 
 
 class EmailVerification(models.Model):
