@@ -3,6 +3,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render,  get_object_or_404, redirect
 from catalog.models import Product
 from catalog.forms import ProductForm, VersionForm
+from catalog.services import cache_product_view
 
 def home(request):
     product_list = Product.objects.all()
@@ -28,7 +29,7 @@ def contacts(requests):
     return render(requests, 'catalog/contacts.html')
 
 
-
+@cache_product_view
 def product(request, pk):
     product = get_object_or_404(Product, pk=pk)
     active_version = product.versions.filter(is_active=True).first()
@@ -55,29 +56,6 @@ def create_version(request, pk):
         form = VersionForm()
 
     return render(request, 'catalog/create_version.html', {'form': form, 'product': product})
-
-def create_version(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-
-    if request.method == 'POST':
-        form = VersionForm(request.POST)
-        if form.is_valid():
-            version = form.save(commit=False)
-            version.product = product
-            version.save()
-            print("Version saved successfully!")
-            return redirect('product', pk=pk)
-        else:
-            print("Form errors:", form.errors)
-    else:
-        form = VersionForm()
-
-    context = {
-        'form': form,
-        'product': product,
-    }
-
-    return render(request, 'catalog/create_version.html', context)
 
 
 def create_product(request):
